@@ -1,0 +1,9 @@
+{
+  "extends": "./tooling/tsconfig/base.json",
+  "include": [],
+  "references": [
+    { "path": "./packages/shared" },
+    { "path": "./packages/engine" },
+    { "path": "./packages/server" }
+  ]
+}

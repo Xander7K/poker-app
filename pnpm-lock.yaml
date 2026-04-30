@@ -18,6 +18,8 @@ importers:
         specifier: ^5.5.0
         version: 5.9.3
 
+  tooling/tsconfig: {}
+
 packages:
 
   '@types/node@20.19.39':
