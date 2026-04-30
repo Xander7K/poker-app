@@ -1,0 +1,13 @@
+{
+  "name": "@poker-app/web-table",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'web-table placeholder — Phase 3 will scaffold Vite'",
+    "dev": "echo 'web-table placeholder — Phase 3 will scaffold Vite'",
+    "lint": "echo 'no-op'",
+    "typecheck": "echo 'no-op'",
+    "test": "echo 'no-op'",
+    "clean": "echo 'no-op'"
+  }
+}

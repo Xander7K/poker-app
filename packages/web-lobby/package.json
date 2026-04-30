@@ -1,0 +1,13 @@
+{
+  "name": "@poker-app/web-lobby",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'web-lobby placeholder — Phase 4 will scaffold Next.js'",
+    "dev": "echo 'web-lobby placeholder — Phase 4 will scaffold Next.js'",
+    "lint": "echo 'no-op'",
+    "typecheck": "echo 'no-op'",
+    "test": "echo 'no-op'",
+    "clean": "echo 'no-op'"
+  }
+}
