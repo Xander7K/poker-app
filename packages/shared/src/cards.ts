@@ -20,21 +20,7 @@ export const SUIT_NAMES: Record<Suit, string> = {
  * Rank of a playing card.
  * 'T' for Ten (single character keeps card representation as 2 chars).
  */
-export const RankSchema = z.enum([
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  'T',
-  'J',
-  'Q',
-  'K',
-  'A',
-]);
+export const RankSchema = z.enum(['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']);
 export type Rank = z.infer<typeof RankSchema>;
 
 export const RANKS: readonly Rank[] = [
