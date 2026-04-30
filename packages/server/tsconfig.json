@@ -1,0 +1,10 @@
+{
+  "extends": "@poker-app/tsconfig/library.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "references": [{ "path": "../shared" }, { "path": "../engine" }],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "tests"]
+}

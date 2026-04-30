@@ -43,6 +43,34 @@ importers:
         specifier: ^2.0.0
         version: 2.1.9(@types/node@20.19.39)
 
+  packages/server:
+    dependencies:
+      '@poker-app/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@poker-app/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@poker-app/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint-config
+      '@poker-app/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/tsconfig
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.39
+      eslint:
+        specifier: ^9.0.0
+        version: 9.39.4
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.0.0
+        version: 2.1.9(@types/node@20.19.39)
+
   packages/shared:
     dependencies:
       zod:
