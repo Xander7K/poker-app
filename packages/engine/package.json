@@ -21,7 +21,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@poker-app/shared": "workspace:*"
+    "@poker-app/shared": "workspace:*",
+    "pokersolver": "^2.1.4"
   },
   "devDependencies": {
     "@poker-app/eslint-config": "workspace:*",
