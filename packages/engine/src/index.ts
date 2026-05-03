@@ -13,3 +13,4 @@ export const ENGINE_VERSION = '0.0.0';
 export const CANONICAL_DECK = FULL_DECK;
 
 export * from './types/index.js';
+export * from './errors.js';
