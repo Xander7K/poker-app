@@ -11,3 +11,5 @@ export const ENGINE_VERSION = '0.0.0';
  * This also serves as a smoke test that the @poker-app/shared dependency is wired correctly.
  */
 export const CANONICAL_DECK = FULL_DECK;
+
+export * from './types/index.js';
