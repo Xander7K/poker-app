@@ -17,15 +17,13 @@ declare module 'pokersolver' {
     name: string;
     /** Detailed description like "Two Pair, A's & 8's". */
     descr: string;
-    /** The 5 cards forming the hand. */
-    cards: PokerSolverCard[];
     /**
-     * Internal ranking used by `winners()`. Higher = better. Ties on this
-     * value are exact splits.
+     * The 5 cards forming the hand, ordered by importance (e.g. for two pair:
+     * top pair, bottom pair, kicker). Suitable for encoding hand strength.
      */
-    rankCards: PokerSolverCard[];
-    /** All input cards as strings, e.g. ['Ad', 'Kc']. */
-    cardPool: string[];
+    cards: PokerSolverCard[];
+    /** All input cards (5-7), as Card objects. */
+    cardPool: PokerSolverCard[];
   }
 
   export class Hand {
