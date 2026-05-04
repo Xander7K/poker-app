@@ -18,3 +18,4 @@ export * from './rng/index.js';
 export * from './evaluator/index.js';
 export * from './clock.js';
 export * from './fsm/index.js';
+export * from './history/index.js';
