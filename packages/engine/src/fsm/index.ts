@@ -6,3 +6,4 @@ export * from './actions.js';
 export * from './betting.js';
 export * from './pots.js';
 export * from './transitions.js';
+export * from './showdown.js';
