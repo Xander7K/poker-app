@@ -18,6 +18,16 @@ export function canStillAct(p: PlayerState): boolean {
 }
 
 /**
+ * Returns true if a player is currently in the hand (Active or AllIn).
+ * Used for dealing cards and computing pot eligibility — distinct from
+ * `isDealtIn` (which gates who can START a hand) and `canStillAct` (which
+ * gates who acts now).
+ */
+export function isInHand(p: PlayerState): boolean {
+  return p.status === PlayerStatus.Active || p.status === PlayerStatus.AllIn;
+}
+
+/**
  * Returns the next seat (clockwise) from `from`, restricted to seats matching
  * the predicate. Returns -1 if no such seat exists in a full lap.
  */
