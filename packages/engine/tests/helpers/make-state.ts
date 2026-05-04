@@ -62,5 +62,6 @@ export function makeState(opts: MakeStateOptions): GameState {
     currentBet: 0,
     lastRaiseSize: 0,
     lastAggressorSeat: -1,
+    actedThisRound: [],
   };
 }

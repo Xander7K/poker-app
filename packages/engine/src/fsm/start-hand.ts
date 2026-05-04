@@ -51,6 +51,7 @@ export function startHand(
     currentBet: 0,
     lastRaiseSize: 0,
     lastAggressorSeat: -1,
+    actedThisRound: [],
     showdown: undefined,
     awards: undefined,
   };

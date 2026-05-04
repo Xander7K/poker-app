@@ -120,6 +120,7 @@ function dealCommunity(state: GameState, count: number): GameState {
     currentBet: 0,
     lastRaiseSize: state.config.bigBlind,
     lastAggressorSeat: -1,
+    actedThisRound: [],
     toActSeat: firstToActPostflop({ ...state, seats: seatsAfterReset }),
   };
 }

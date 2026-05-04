@@ -28,15 +28,15 @@ export function applyAction(state: GameState, seat: SeatIndex, action: Action): 
     case 'fold':
       return applyFold(state, seat, player);
     case 'check':
-      return applyCheck(state, player);
+      return applyCheck(state, seat, player);
     case 'call':
       return applyCall(state, seat, player);
     case 'bet':
-      return mergeBettingResult(state, applyBet(state, seat, player, action.amount));
+      return mergeBettingResult(state, seat, applyBet(state, seat, player, action.amount));
     case 'raise':
-      return mergeBettingResult(state, applyRaise(state, seat, player, action.amount));
+      return mergeBettingResult(state, seat, applyRaise(state, seat, player, action.amount));
     case 'allIn':
-      return mergeBettingResult(state, applyAllIn(state, seat, player));
+      return mergeBettingResult(state, seat, applyAllIn(state, seat, player));
     default: {
       const _exhaustive: never = action;
       void _exhaustive;
@@ -45,30 +45,47 @@ export function applyAction(state: GameState, seat: SeatIndex, action: Action): 
   }
 }
 
-function mergeBettingResult(state: GameState, r: BettingResult): GameState {
+/**
+ * Merges a BettingResult into the state, also updating `actedThisRound`.
+ * If the aggression was a full raise (reopened=true), prior actors lose
+ * their "have acted" status: actedThisRound resets to just `[seat]`. Otherwise
+ * (short all-in) we just append.
+ */
+function mergeBettingResult(state: GameState, seat: SeatIndex, r: BettingResult): GameState {
+  const actedThisRound = r.reopened ? [seat] : appendActed(state.actedThisRound, seat);
   return {
     ...state,
     seats: r.seats,
     currentBet: r.currentBet,
     lastRaiseSize: r.lastRaiseSize,
     lastAggressorSeat: r.lastAggressorSeat,
+    actedThisRound,
   };
+}
+
+function appendActed(prev: readonly SeatIndex[], seat: SeatIndex): SeatIndex[] {
+  // Don't add duplicates — set semantics.
+  return prev.includes(seat) ? prev.slice() : [...prev, seat];
 }
 
 function applyFold(state: GameState, seat: SeatIndex, player: PlayerState): GameState {
   const seats = state.seats.slice();
   seats[seat] = { ...player, status: PlayerStatus.Folded };
-  return { ...state, seats };
+  return {
+    ...state,
+    seats,
+    actedThisRound: appendActed(state.actedThisRound, seat),
+  };
 }
 
-function applyCheck(state: GameState, player: PlayerState): GameState {
+function applyCheck(state: GameState, seat: SeatIndex, player: PlayerState): GameState {
   // Check is legal only when there's nothing to call.
   if (player.committedThisRound < state.currentBet) {
     throw new IllegalActionError(
       `Cannot check: facing a bet of ${state.currentBet - player.committedThisRound} to call`,
     );
   }
-  return state; // No state change other than turn advance (handled elsewhere).
+  return { ...state, actedThisRound: appendActed(state.actedThisRound, seat) };
 }
 
 function applyCall(state: GameState, seat: SeatIndex, player: PlayerState): GameState {
@@ -89,5 +106,9 @@ function applyCall(state: GameState, seat: SeatIndex, player: PlayerState): Game
   };
   const seats = state.seats.slice();
   seats[seat] = newPlayer;
-  return { ...state, seats };
+  return {
+    ...state,
+    seats,
+    actedThisRound: appendActed(state.actedThisRound, seat),
+  };
 }

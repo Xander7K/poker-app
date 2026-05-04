@@ -92,6 +92,17 @@ export interface GameState {
    */
   readonly lastAggressorSeat: SeatIndex;
   /**
+   * Seats that have voluntarily acted in the current betting round.
+   * Reset to `[]` at the start of each street and on any aggression that
+   * reopens action (full bet/raise/full-stack all-in). Forced posts (blinds,
+   * antes) do NOT count as acting.
+   *
+   * Used by `advanceTurn` to know when every still-active player has had a
+   * turn — needed to handle BB option preflop and the short-all-in case
+   * correctly.
+   */
+  readonly actedThisRound: readonly SeatIndex[];
+  /**
    * Showdown evaluation results, populated only when phase is
    * Showdown or HandComplete.
    */

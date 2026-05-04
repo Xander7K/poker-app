@@ -50,6 +50,7 @@ function makeState(seatStatuses: PlayerStatus[], buttonSeat: number): GameState 
     currentBet: 0,
     lastRaiseSize: 0,
     lastAggressorSeat: -1,
+    actedThisRound: [],
   };
 }
 
