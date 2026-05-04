@@ -1,20 +1,30 @@
 import { applyAction } from '../../src/fsm/actions.js';
+import { dealFlop, dealRiver, dealTurn } from '../../src/fsm/deal.js';
+import { advanceTurn } from '../../src/fsm/transitions.js';
 import type { Action } from '../../src/types/action.js';
 import type { GameState } from '../../src/types/game-state.js';
+import { GamePhase } from '../../src/types/phase.js';
 
 /**
- * Test helper: applies a sequence of actions, automatically using `state.toActSeat`
- * for each. Throws if a step has no toActSeat set.
- *
- * Note: this helper does NOT advance the turn between actions. It's only useful
- * for testing single-action behavior. Use `step` / `steps` (added in step 20)
- * for full streets that handle turn advance.
+ * Apply a single action at the current toActSeat, then advance the turn.
  */
-export function applyActionsAtCurrentSeat(state: GameState, actions: readonly Action[]): GameState {
+export function step(state: GameState, action: Action): GameState {
+  const after = applyAction(state, state.toActSeat, action);
+  return advanceTurn(after);
+}
+
+/**
+ * Apply a sequence of actions, advancing turn between each.
+ * After the last action, deals the next street's cards if applicable.
+ */
+export function steps(state: GameState, actions: readonly Action[]): GameState {
   let s = state;
   for (const action of actions) {
-    if (s.toActSeat < 0) throw new Error('No seat to act');
-    s = applyAction(s, s.toActSeat, action);
+    s = step(s, action);
   }
+  // If the previous step closed a street, deal the cards for the new phase.
+  if (s.phase === GamePhase.Flop && s.board.length === 0) s = dealFlop(s);
+  if (s.phase === GamePhase.Turn && s.board.length === 3) s = dealTurn(s);
+  if (s.phase === GamePhase.River && s.board.length === 4) s = dealRiver(s);
   return s;
 }
