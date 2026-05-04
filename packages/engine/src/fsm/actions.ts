@@ -1,8 +1,9 @@
-import { IllegalActionError, IllegalBetError, WrongTurnError } from '../errors.js';
+import { IllegalActionError, WrongTurnError } from '../errors.js';
 import type { Action } from '../types/action.js';
 import type { GameState } from '../types/game-state.js';
 import { type PlayerState, PlayerStatus, type SeatIndex } from '../types/player.js';
 
+import { applyAllIn, applyBet, applyRaise, type BettingResult } from './betting.js';
 import { canStillAct } from './positions.js';
 
 /**
@@ -31,16 +32,27 @@ export function applyAction(state: GameState, seat: SeatIndex, action: Action): 
     case 'call':
       return applyCall(state, seat, player);
     case 'bet':
+      return mergeBettingResult(state, applyBet(state, seat, player, action.amount));
     case 'raise':
+      return mergeBettingResult(state, applyRaise(state, seat, player, action.amount));
     case 'allIn':
-      // Implemented in the next step.
-      throw new IllegalBetError(`Action type "${action.type}" not yet implemented`);
+      return mergeBettingResult(state, applyAllIn(state, seat, player));
     default: {
       const _exhaustive: never = action;
       void _exhaustive;
       throw new IllegalActionError(`Unknown action`);
     }
   }
+}
+
+function mergeBettingResult(state: GameState, r: BettingResult): GameState {
+  return {
+    ...state,
+    seats: r.seats,
+    currentBet: r.currentBet,
+    lastRaiseSize: r.lastRaiseSize,
+    lastAggressorSeat: r.lastAggressorSeat,
+  };
 }
 
 function applyFold(state: GameState, seat: SeatIndex, player: PlayerState): GameState {
