@@ -141,12 +141,23 @@ function advanceStreetOrShowdown(state: GameState): GameState {
  * Deal out remaining streets and go straight to showdown. Used when all
  * remaining players are all-in (or only one is left after a fold-around
  * with prior all-ins).
+ *
+ * The deal* helpers do NOT advance the phase themselves (that's normally
+ * `advanceStreetOrShowdown`'s job), so we bump the phase between deals here.
  */
 function runOutToShowdown(state: GameState): GameState {
   let s = state;
-  if (s.phase === GamePhase.Flop) s = dealFlop(s);
-  if (s.phase === GamePhase.Turn) s = dealTurn(s);
-  if (s.phase === GamePhase.River) s = dealRiver(s);
+  if (s.phase === GamePhase.Flop) {
+    s = dealFlop(s);
+    s = { ...s, phase: GamePhase.Turn };
+  }
+  if (s.phase === GamePhase.Turn) {
+    s = dealTurn(s);
+    s = { ...s, phase: GamePhase.River };
+  }
+  if (s.phase === GamePhase.River) {
+    s = dealRiver(s);
+  }
   return { ...s, phase: GamePhase.Showdown, toActSeat: -1 };
 }
 
