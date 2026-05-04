@@ -17,3 +17,4 @@ export * from './errors.js';
 export * from './rng/index.js';
 export * from './evaluator/index.js';
 export * from './clock.js';
+export * from './fsm/index.js';
