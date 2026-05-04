@@ -4,3 +4,4 @@ export * from './blinds.js';
 export * from './deal.js';
 export * from './actions.js';
 export * from './betting.js';
+export * from './pots.js';
